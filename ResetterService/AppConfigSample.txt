@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+  <appSettings>    
+    <add key="ServiceNamesToRestart" value="SkypeUpdate,GoogleUpdateService" />
+    <add key="WorkingHours" value="7,23" />
+    <!-- ======== EMAIL CONFIGS ================= /-->
+    <add key="SmtpServer" value="mail.yourdomain.com" />
+    <add key="SmtpServerAuthenticateUser" value="acme@mail.com" />
+    <add key="SmtpServerAuthenticatePassword" value="YourEmailPassW0rd" />
+    <add key="SmtpServerPort" value="25" />
+    <add key="fromEmailAddress" value="acme@mail.com" />
+    <add key="fromEmailAddressDescription" value="Restart Service" />
+    <add key="mailtoAddress" value="mailTo1;mailTo2;mailTo3" />
+    <add key="mailCCAddress" value="mailCC1;mailCC2;mailCC3" />    
+  </appSettings>
+    <startup> 
+        <supportedRuntime version="v4.0" sku=".NETFramework,Version=v4.5" />
+    </startup>
+</configuration>
