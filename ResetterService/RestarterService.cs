@@ -36,7 +36,7 @@ namespace ResetterService
             {
                 ResetterJob = new System.Timers.Timer(TimeSpan.FromHours(1).TotalMilliseconds); //Satte bir kontrol et.
                 ResetterJob.Elapsed += new System.Timers.ElapsedEventHandler(ResetterJob_Elapsed);
-                ResetterJob.Start();
+                ResetterJob.Start();                
             }
             catch (Exception excep)
             {                        
@@ -111,7 +111,7 @@ namespace ResetterService
         {
             Console.WriteLine(infoMessage);
             this.EventLog.WriteEntry(infoMessage, EventLogEntryType.Information);
-            logCommon("[INFO]->" + infoMessage);
+            logCommon(string.Format("[INFO]->{0} {1}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),infoMessage));
         }
 
         void logError(string errorMessage)
@@ -121,7 +121,7 @@ namespace ResetterService
             string mailToAddress=ConfigFileConfigurationProvider.configuration.Value.AppSettings.Settings["mailtoAddress"].Value;
             string mailCCAddress=ConfigFileConfigurationProvider.configuration.Value.AppSettings.Settings["mailCCAddress"].Value;
             Helpers.SendMail(mailToAddress, "ResetterAppliciton", errorMessage, mailCCAddress);
-            logCommon("[ERROR]->"+errorMessage);
+            logCommon(string.Format("[ERROR]->{0} {1}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), errorMessage));
         }
 
         void logCommon(string text)
@@ -133,9 +133,9 @@ namespace ResetterService
         {
             string path = string.Format("{0}_{1}.txt", Helpers.ApplicationExecutableName ,DateTime.Now.ToString("yyyy-MM-dd"));
             using (StreamWriter sw = (File.Exists(path)) ? File.AppendText(path) : File.CreateText(path))
-            {                
-                    sw.WriteLine(text);
-                    sw.Flush();
+            {
+                sw.WriteLine(text);
+                sw.Flush();
             } 
         }
 
