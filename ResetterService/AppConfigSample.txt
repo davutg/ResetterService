@@ -2,7 +2,7 @@
 <configuration>
   <appSettings>    
     <add key="ServiceNamesToRestart" value="SkypeUpdate,GoogleUpdateService" />
-    <add key="WorkingHours" value="7,23" />
+    <add key="WorkingHours" value="7:05,23:30" />
     <!-- ======== EMAIL CONFIGS ================= /-->
     <add key="SmtpServer" value="mail.yourdomain.com" />
     <add key="SmtpServerAuthenticateUser" value="acme@mail.com" />

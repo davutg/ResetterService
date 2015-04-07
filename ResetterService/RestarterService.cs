@@ -9,6 +9,7 @@ using System.Linq;
 using System.ServiceProcess;
 using System.Text;
 using System.Threading.Tasks;
+using System.Collections;
 
 namespace ResetterService
 {
@@ -34,7 +35,7 @@ namespace ResetterService
             ReadConfig();           
             try
             {
-                ResetterJob = new System.Timers.Timer(TimeSpan.FromHours(1).TotalMilliseconds); //Satte bir kontrol et.
+                ResetterJob = new System.Timers.Timer(TimeSpan.FromMinutes(1).TotalMilliseconds); //Check it every minute
                 ResetterJob.Elapsed += new System.Timers.ElapsedEventHandler(ResetterJob_Elapsed);
                 ResetterJob.Start();                
             }
@@ -108,15 +109,14 @@ namespace ResetterService
         }
 
         void logInfo(string infoMessage)
-        {
-            Console.WriteLine(infoMessage);
+        {            
             this.EventLog.WriteEntry(infoMessage, EventLogEntryType.Information);
             logCommon(string.Format("[INFO]->{0} {1}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),infoMessage));
         }
 
         void logError(string errorMessage)
         { 
-            Console.WriteLine(errorMessage);
+            
             this.EventLog.WriteEntry(errorMessage, EventLogEntryType.Error);
             string mailToAddress=ConfigFileConfigurationProvider.configuration.Value.AppSettings.Settings["mailtoAddress"].Value;
             string mailCCAddress=ConfigFileConfigurationProvider.configuration.Value.AppSettings.Settings["mailCCAddress"].Value;
@@ -126,6 +126,7 @@ namespace ResetterService
 
         void logCommon(string text)
         {
+            Console.WriteLine(text);
             logToFile(text);
         }
 
@@ -139,19 +140,44 @@ namespace ResetterService
             } 
         }
 
+        static bool isWorkingNow,isWorkingTime = false;
         void ResetterJob_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
             try
             {
-                var hours=ConfigFileConfigurationProvider.configuration.Value.AppSettings.Settings["WorkingHours"].Value.Split(',');
-                if (!hours.Contains(DateTime.Now.Hour.ToString()))
+                DateTime ct=DateTime.Now; //Current Time
+                var hoursAndMinutes=ConfigFileConfigurationProvider.configuration.Value.AppSettings.Settings["WorkingHours"].Value.Split(',');
+
+                foreach (var hourMinute in hoursAndMinutes)
+                {
+                    string hour,minute;
+                    var hm=hourMinute.Split(':');
+                    hour = hm[0];
+                    minute = hm[1];
+                    if(ct.Hour.ToString().TrimStart('0')==hour.TrimStart('0') && ct.Minute.ToString().TrimStart('0')==minute.TrimStart('0'))
+                    {
+                        isWorkingTime = true;
+                    }
+                }
+
+                if (isWorkingNow)
+                {
+                    logInfo("The job is already working right now..");
+                    return;
+                }
+
+                if (!isWorkingTime)
                     return;
 
+                
                 ResetterJob.Stop();
+                isWorkingNow = true;
                 foreach (var serviceName in ServiceNames)
                 {
                     Reset(serviceName);
                 }
+                isWorkingNow = false; //All the operations must be sync-ops till here
+                isWorkingTime = false;
             }
             catch (Exception ex)
             {
