@@ -1,0 +1,6 @@
+﻿-C'ConnectionTracerService' -p'www.datasel.com.tr' 
+-C'ConnectionTracerService' -p'www.google.com.tr'
+
+#C is the name of the class extend from ResetterServiceBase 
+#p is(are) the param(s) which is/are used for the class.
+#Note each of the class works under a new thread

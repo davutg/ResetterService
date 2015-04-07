@@ -33,7 +33,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>ResetterService.RestarterService</StartupObject>
+    <StartupObject>ResetterService.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -49,6 +49,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConnectionTracerService.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Helpers.cs" />
     <Compile Include="Helpers.Encrypt.cs" />
     <Compile Include="ProjectInstaller.cs">
@@ -56,6 +59,9 @@
     </Compile>
     <Compile Include="ProjectInstaller.Designer.cs">
       <DependentUpon>ProjectInstaller.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ResertterServiceBase.cs">
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="RestarterService.cs">
       <SubType>Component</SubType>
@@ -76,6 +82,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="AppConfigSample.txt" />
+    <Content Include="AppCommandLineStartSample.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

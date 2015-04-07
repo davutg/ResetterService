@@ -86,6 +86,16 @@ namespace ResetterService
 
         }
 
+        public static void logToFile(string text)
+        {
+            string path = string.Format("{0}_{1}.txt", Helpers.ApplicationExecutableName, DateTime.Now.ToString("yyyy-MM-dd"));
+            using (StreamWriter sw = (File.Exists(path)) ? File.AppendText(path) : File.CreateText(path))
+            {
+                sw.WriteLine(text);
+                sw.Flush();
+            }
+        }
+
         public static List<string> SplitMailList(string concatedAddresses)
         {
             if (!string.IsNullOrEmpty(concatedAddresses))

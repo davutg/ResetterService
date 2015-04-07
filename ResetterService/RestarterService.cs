@@ -13,7 +13,7 @@ using System.Collections;
 
 namespace ResetterService
 {
-    public partial class RestarterService : ServiceBase
+    public partial class RestarterService : ResertterServiceBase
     {
         private static System.Timers.Timer ResetterJob;
         public static string[] ServiceNames = null ;
@@ -127,18 +127,9 @@ namespace ResetterService
         void logCommon(string text)
         {
             Console.WriteLine(text);
-            logToFile(text);
+            Helpers.logToFile(text);
         }
-
-        void logToFile(string text)
-        {
-            string path = string.Format("{0}_{1}.txt", Helpers.ApplicationExecutableName ,DateTime.Now.ToString("yyyy-MM-dd"));
-            using (StreamWriter sw = (File.Exists(path)) ? File.AppendText(path) : File.CreateText(path))
-            {
-                sw.WriteLine(text);
-                sw.Flush();
-            } 
-        }
+       
 
         static bool isWorkingNow,isWorkingTime = false;
         void ResetterJob_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
