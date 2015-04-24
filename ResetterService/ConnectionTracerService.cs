@@ -21,7 +21,7 @@ namespace ResetterService
 
         private void Init()
         {
-            PingTimer = new System.Timers.Timer(TimeSpan.FromSeconds(10).TotalMilliseconds); //Check it every minute
+            PingTimer = new System.Timers.Timer(TimeSpan.FromSeconds(1).TotalMilliseconds); //Check it every minute
             PingTimer.Elapsed += (sender, e) =>
                 {                   
                     sb.Clear();
