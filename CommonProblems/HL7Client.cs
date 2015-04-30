@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using NHapi.Base.Parser;
 using NHapi.Model.V25.Message;
 using NHapi.Base.Model;
+using NHapi.Base.Model.Primitive;
 
 namespace HL7Comm
 {
@@ -66,13 +67,17 @@ namespace HL7Comm
                 if (receivedCount > 0)
                 {
                     var response = Encoding.UTF8.GetString(dataBuf);
-                    response = response.Replace("|2.2","|2.5");
+                    //response = response.Replace("|2.2","|2.5");
                     PipeParser pp = new PipeParser();
                     IMessage reply = null;
                     if(!string.IsNullOrEmpty(response) && response.Contains("MSH"))
                         reply=pp.Parse(response.Substring(response.IndexOf("MSH")));
                     if (reply != null)
                     {
+                        //IStructure msa = reply.GetStructure("MSA");
+                        //IType ackCode = ((ISegment)msa).GetField(1)[0];                        
+                        //string ackCodeValue =((GenericPrimitive)ackCode).Value;
+                        
                         var r = (ACK)reply;
                         if (r.MSA.AcknowledgmentCode.Value == "AA")
                             return true;
@@ -223,7 +228,7 @@ namespace HL7Comm
                     }
                     catch (Exception excpt)
                     {
-                        throw new Exception("TCP client couldn't started successfully", excpt);
+                        Debug.WriteLine(string.Format("TCP client couldn't started successfully :{0}", excpt));                        
                     }
 
                 }
